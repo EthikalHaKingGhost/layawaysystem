@@ -1,0 +1,6 @@
+Payment_id,Layaway_id,Name,email,phone,Deposits,balance,total,status,"Date Started"
+7,9,"John Doe",carainford@aol.com,6785676,100.00,0.00,398.00,open,2022-12-28
+5,9,"John Doe",carainford@aol.com,6785676,200.00,0.00,398.00,open,2022-12-28
+13,10,"Jack Joe",carainford@aol.com,6785899,70.00,0.00,100.00,closed,2022-12-28
+11,10,"Jack Joe",carainford@aol.com,6785899,30.00,0.00,100.00,closed,2022-12-28
+10,9,"John Doe",carainford@aol.com,6785676,10.00,0.00,398.00,open,2022-12-28

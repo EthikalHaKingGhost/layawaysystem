@@ -20,33 +20,51 @@
 
 include 'header.php';
 
-if (isset($_GET["del"])) {
-
-  $delID = $_GET["del"];
-
-  include('connection.php');
-
-  $del = "DELETE FROM `customerdetails` WHERE `customerdetails`.`customerID` = $delID ";
-
-  if (mysqli_query($conn, $del)) {
-?>
-    <div class="alert alert-danger alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Success!</strong> Layway Details
-    </div>
-<?php
-  }
+if (isset($_GET["error"])) {
+  if($_GET['error'] == 'closed'){
+echo'
+<div class="alert alert-warning alert-dismissible">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+<strong>Closed!</strong> This Layaway has been closed and cannot be edited.
+</div>';
+}
 }
 
+if (isset($_GET["deleted"])) {
+
+echo'
+      <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Success!</strong> Layaway was deleted successfully.
+        </div>';
+}
+
+
+if (isset($_GET["cid"])) {
+
+  $userid = $_GET["cid"];
+
+  include 'connection.php';
+  $sql = "SELECT name FROM customerdetails WHERE CID = $userid";
+  $result = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+      $name = $row['name'];
+    }
+  }
+
 ?>
 
-<h1 class="display-4 py-5 text-center font-weight-bold">Payment Details</h1>
+<h1 class="display-4 py-5 text-center font-weight-bold">Layaway Details</h1>
 
 <div class="container">
 
   <div class="form-row align-items-end">
 
-    <div class="form-group col">
+    <div class="form-group col-auto">
+    <a href="addcustomer.php"><button type="button" class="btn btn-info btn-md">New Layaway</button></a>
+      <a href="index.php" class="btn btn-danger btn-md">Back</a>
+</div>
+<div class="form-group col">
       <input class="form-control" id="myInput" type="text" placeholder="Type to search for Customer...">
     </div>
   </div>
@@ -56,12 +74,11 @@ if (isset($_GET["del"])) {
     <table class="table table-striped table-light">
       <thead>
         <tr class="text-center">
-          <th>Due</th>
           <th>Name</th>
-          <th>Email</th>
-          <th>Balance</th>
           <th>No.of Deposits</th>
-          <th>Credit</th>
+          <th>Balance</th>
+          <th>Total</th>
+          <th>Date Due</th>
           <th>Completed</th>
           <th>Action</th>
         </tr>
@@ -72,29 +89,26 @@ if (isset($_GET["del"])) {
 
       include 'connection.php';
 
-      $sql = "SELECT * FROM paymentdetails, customerdetails WHERE customerdetails.customerID = paymentdetails.customerID AND paymentdetails.customerID != 0 ORDER BY balance DESC
-";
+      $sql = "SELECT * FROM layawaydetails,customerdetails WHERE customerdetails.CID = layawaydetails.CID";
       $result = mysqli_query($conn, $sql);
       if (mysqli_num_rows($result) > 0) {
 
         // output data of each row
         while ($row = mysqli_fetch_assoc($result)) {
           $name = $row['name'];
-          $email = $row['email'];
-          $phone = $row['phone'];
-          $address = $row['address'];
-          $status = $row['status'];
-          $address = $row['address'];
-          $totalQuantity = $row['totalQuantity'];
-          $TotalPrice = $row['TotalPrice'];
+          $TotalPrice = $row['total'];
           $balance = $row['balance'];
+          $cid = $row['CID'];
+          $lid = $row['LID'];
           $status = $row['status'];
-          $cid = $row['customerID'];
-          $pid = $row['paymentID'];
-          $progress = (($TotalPrice - $balance) / $TotalPrice) * 100;
+          $progress = 0;
+          if($TotalPrice > 0){
+            $progress = (($TotalPrice - $balance) / $TotalPrice) * 100;
+          }
           $Date = Date('Y-m-d');
-          $dueDate = $row['dueDate'];
-          $layaway = "customerLayaways.php?cid=$cid";
+          $dueDate = $row['dateDue'];
+          $layaway = "addlayaway.php?cid=$cid";
+          $dellayaway = "layawaydetails.php?delCID=$cid&delLID=$lid";
 
           $datecolor = 'class="text-white text-center" style="background: yellow"';
 
@@ -104,18 +118,19 @@ if (isset($_GET["del"])) {
             $dueDate = 'N/A';
           }
 
+/*Progress colors styling*/
 
           switch (true) {
             case $progress <= 25 && $progress > 0:
-              $color = 'class="text-white text-center" style="background: #ff7979"';
+              $color = 'class="text-dark text-center" style="background: #ff7979"';
               break;
 
             case $progress <= 50 && $progress > 25:
-              $color = 'class="text-white text-center" style="background: #ffbe76"';
+              $color = 'class="text-dark text-center" style="background: #ffbe76"';
               break;
 
             case $progress < 100 && $progress > 50:
-              $color = 'class="text-white text-center" style="background: #f6e58d"';
+              $color = 'class="text-dark text-center" style="background: #f6e58d"';
               break;
 
             case $progress == 100:
@@ -129,91 +144,95 @@ if (isset($_GET["del"])) {
 
 
           //calculate the number of depoists 
-          $depNum = "SELECT COUNT(depositID) AS numDep FROM deposits WHERE paymentID = $pid";
+          $depNum = "SELECT COUNT(PID) AS numDep FROM paymentdetails WHERE LID = $lid";
           $depresults = mysqli_query($conn, $depNum);
-          $num = mysqli_fetch_assoc($depresults);
-          $depositNumber = $num['numDep'];
+          $rowz = mysqli_fetch_assoc($depresults);
+          $depositNumber = $rowz['numDep']; 
 
+?>
 
-          // Declare and define two dates
-          $date1 = strtotime($dueDate);
-          $date2 = strtotime($Date);
+              <tbody id="myTable">
+                <tr class="text-center">
+                  
+                  <td><?php echo $name; ?></td>
+                  <td><?php echo $depositNumber; ?></td>
+                  <td><?php echo $balance; ?></td>
+                  <td><?php echo $TotalPrice; ?></td>
+                  <td><?php echo $dueDate; ?></td>
+                  <td <?php echo $color; ?>><?php echo round($progress) . '%'; ?></td>
+                  <td><a href="<?php echo $layaway; ?>" title="View customer Layway" 
+                  class="btn btn-success btn-sm">Edit</a>
 
-          // Formulate the Difference between two dates
-          $diff = abs($date2 - $date1);
-
-          // To get the year divide the resultant date into
-          // total seconds in a year (365*60*60*24)
-          $years = floor($diff / (365 * 60 * 60 * 24));
-
-          // To get the month, subtract it with years and
-          // divide the resultant date into
-          // total seconds in a month (30*60*60*24)
-          $months = floor(($diff - $years * 365 * 60 * 60 * 24)
-            / (30 * 60 * 60 * 24));
-
-          // To get the day, subtract it with years and 
-          // months and divide the resultant date into
-          // total seconds in a days (60*60*24)
-          $days = floor(($diff - $years * 365 * 60 * 60 * 24 -
-            $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-
-
-
-
-          if ($date2 >= $dueDate) {
-            $due = "due";
-          } else {
-
-            if ($months > 0) {
-              $labelMonths = ' months, ';
-            } else if ($months == 0) {
-              $months = '';
-              $labelMonths = '';
-            }
-
-            if ($days > 0) {
-              $labelDays = ' days';
-            } else if ($days == 0) {
-              $days = '';
-              $labelDays = '';
-            }
-
-            $due = '';
-          }
-
-      ?>
-
-          <tbody id="myTable">
-            <tr>
-              <td><?php echo $months . $labelMonths . $days . $labelDays . $due; ?></td>
-              <td><?php echo $name; ?></td>
-              <td><?php echo $email; ?></td>
-              <td><?php echo $balance; ?></td>
-              <td class="text-center"><?php echo $depositNumber; ?></td>
-              <td><?php echo $TotalPrice; ?></td>
-              <td <?php echo $color; ?>><?php echo round($progress) . '%'; ?></td>
-
-
+                <!-- delete button -->
+                <?php if ($balance == 0 || $status == 'closed'){ ?>
               
+                <a href="<?php echo $dellayaway; ?>" class="btn btn-danger btn-sm">Delete1</a>
 
-                  <a href="<?php echo $layaway; ?>" title="View customer Layway" class="btn btn-outline-dark btn-sm">View Layways</a>
+                <?php
+                }else{
+                ?>
+                <a type="button" class="btn btn-danger btn-sm text-white" data-toggle="modal" data-target="#staticBackdrop">Delete</a>
 
-                </td>
-              
+                    <!-- Modal for delete button-->
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Confirm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <?php
 
-            </tr>
-          </tbody>
+                          include 'connection.php';
+                          $amountqry = "SELECT SUM(Deposit) AS totalDep FROM paymentdetails WHERE LID = $lid";
+
+                          $amt = mysqli_query($conn, $amountqry);
+                          $rowz = mysqli_fetch_assoc($amt);
+                          $totalDep = $rowz['totalDep'];
+
+                          if ($totalDep == "") {
+                            $totalDep = '0.00';
+                          }
+
+                          echo 'Customer has <b>$' . $totalDep . '</b> in Layaway, are you sure you want to delete this Layway and all the Deposits?';
+                          echo "</br>";
+                          echo "</br>";
+                          echo "<b class='text-danger'>Please withdraw Deposited cash before deleting!</b>";
+
+                          ?>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <a href="<?php echo "layaway_process.php?lid=$lid&cid=$cid&del_lay" ?>"><button type="button" class="btn btn-danger">Delete</button></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <?php
+                } 
+                ?>
+                          </td>
+                          
+                          
+
+                        </tr>
+                      </tbody>
 
 
-      <?php
-        }
-      }
-      ?>
+                  <?php
+                    }
+                  }
+                  ?>
 
-    </table>
-  </div>
-</div>
+                </table>
+              </div>
+
+
+
+            </div>
 
 
 <script>
@@ -224,9 +243,9 @@ if (isset($_GET["del"])) {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
-  });
-</script>
 
-<?php include 'footer.php'; ?>
+  });
+
+</script>
 
 <?php include 'footer.php'; ?>

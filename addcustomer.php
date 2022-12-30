@@ -1,19 +1,16 @@
 <?php
-
-
 include 'header.php';
-
 ?>
+<body style="background-color: lightgrey;">
+<h1 class="display-4 py-5 text-center font-weight-bold">Add Customer</h1>
 
-<h1 class="display-4 py-4 text-center">Add Customer</h1>
-
-<div class="container">
+<div class="container bg-light p-5 rounded shadow">
 
   <form method="post" action="customer_edit.php">
 
     <div class="form-group">
       <label for="name">Full Name</label>
-      <input type="text" name="name" class="form-control">
+      <input type="text" name="name" class="form-control" required>
     </div>
 
     <div class="form-group">
@@ -33,12 +30,14 @@ include 'header.php';
 
     <div>
 
-      <input type="submit" name="addCustomer" class="btn btn-primary" value="Add">
-      <a href="customers.php" title="back" class="btn btn-danger">Close</a>
+      <input type="submit" name="addCustomer" class="btn btn-success" value="Add Layaway">
+      <a href="customers.php" title="Show all Customers" class="btn btn-primary">Existing Customers</a>
+      <a href="index.php" title="Go to home page" class="btn btn-danger">Close</a>
 
     </div>
 
   </form>
 </div>
+</body>
 
 <?php include 'footer.php'; ?>

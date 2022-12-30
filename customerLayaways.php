@@ -14,7 +14,7 @@ if (isset($_GET['cid'])) {
 if (isset($_GET['status'])) {
 
   $id = $_GET['cid'];
-  $id_pay = $_GET['pid'];
+  $id_pay = $_GET['lid'];
   $status = $_GET['status'];
 
   if ($_GET['status'] == 'close') {
@@ -22,24 +22,20 @@ if (isset($_GET['status'])) {
     include 'connection.php';
     //database check in the event of a page refresh and insert same data
 
-    $sqlpay = "SELECT * FROM paymentdetails WHERE customerID = $id AND paymentID = $id_pay";
+    $sqlpay = "SELECT * FROM layawaydetails WHERE CID = $id AND LID = $id_pay";
     $results = mysqli_query($conn, $sqlpay);
     $row = mysqli_fetch_assoc($results);
     $PayBal = $row['balance'];
 
     if ($PayBal == 0) {
 
-      $updateDep = "UPDATE `paymentdetails` SET `status` = '$status' WHERE `paymentdetails`.`paymentID` = $id_pay AND `paymentdetails`.`customerID` = $id";
+      $updateDep = "UPDATE `layawaydetails` SET `status` = '$status' WHERE `layawaydetails`.`LID` = $id_pay AND `layawaydetails`.`CID` = $id";
 
       $depUpdate = mysqli_query($conn, $updateDep);
     } else {
     }
   }
 }
-
-
-
-
 
 
 ?>
@@ -52,16 +48,14 @@ if (isset($_GET['status'])) {
 
     include 'connection.php';
 
-    $sql = "SELECT * FROM paymentdetails WHERE customerID = $cid ORDER BY paymentID DESC";
+    $sql = "SELECT * FROM layawaydetails WHERE CID = $cid ORDER BY LID DESC";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
       // output data of each row
       while ($row = mysqli_fetch_assoc($result)) {
-        $payID = $row['paymentID'];
-        $date = $row['payDate'];
-        $due = $row['dueDate'];
-
-
+        $payID = $row['LID'];
+        $date = $row['dateUpdated'];
+        $due = $row['dateDue'];
     ?>
 
         <div class="p-3 well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
@@ -71,7 +65,7 @@ if (isset($_GET['status'])) {
                 <p>
                   <?php
 
-                  $paidQuery = "SELECT * FROM paymentdetails WHERE paymentID = $payID AND status = 'close'";
+                  $paidQuery = "SELECT * FROM layawaydetails WHERE LID = $payID AND status = 'close'";
 
                   $resultz = mysqli_query($conn, $paidQuery);
                   if (mysqli_num_rows($resultz) > 0) {
@@ -84,7 +78,7 @@ if (isset($_GET['status'])) {
                   } else {
 
 
-                    $paidQuery = "SELECT * FROM paymentdetails WHERE paymentID = $payID AND payDate >= dueDate";
+                    $paidQuery = "SELECT * FROM layawaydetails WHERE LID = $payID AND payDate >= dueDate";
 
                     $resultz = mysqli_query($conn, $paidQuery);
                     if (mysqli_num_rows($resultz) > 0) {
@@ -131,7 +125,7 @@ if (isset($_GET['status'])) {
 
                 <tbody>
                   <?php
-                  $productsinfo = "SELECT * FROM paymentdetails, productdetails WHERE paymentdetails.paymentID = productdetails.paymentID AND productdetails.paymentID = $payID AND paymentdetails.customerID = $cid";
+                  $productsinfo = "SELECT * FROM layawaydetails, productdetails WHERE layawaydetails.LID = productdetails.LID AND productdetails.LID = $payID AND layawaydetails.CID = $cid";
                   $productsql = mysqli_query($conn, $productsinfo);
                   if (mysqli_num_rows($productsql) > 0) {
                     // output data of each row
@@ -141,13 +135,13 @@ if (isset($_GET['status'])) {
                       $price = $row['price'];
                       $subtotal = $qty * $price;
 
-                      $totalAll = "SELECT * FROM `paymentdetails` WHERE customerID = $cid AND paymentID = $payID ";
+                      $totalAll = "SELECT * FROM `layawaydetails` WHERE CID = $cid AND LID = $payID ";
                       $totalAllQRY = mysqli_query($conn, $totalAll);
                       $row = mysqli_fetch_assoc($totalAllQRY);
                       $total = $row['TotalPrice'];
 
 
-                      $DepAmt = "SELECT SUM(Deposit) AS total FROM `deposits` WHERE paymentID = $payID ";
+                      $DepAmt = "SELECT SUM(Deposit) AS total FROM `deposits` WHERE LID = $payID ";
 
                       $DepAmtQry = mysqli_query($conn, $DepAmt);
                       $row = mysqli_fetch_assoc($DepAmtQry);
@@ -197,7 +191,7 @@ if (isset($_GET['status'])) {
                   </tr>
 
                   <?php
-                  $AllDep = "SELECT * FROM deposits WHERE paymentID = $payID";
+                  $AllDep = "SELECT * FROM deposits WHERE LID = $payID";
                   $AllDepQry = mysqli_query($conn, $AllDep);
                   if (mysqli_num_rows($AllDepQry) > 0) {
                     while ($rows = mysqli_fetch_assoc($AllDepQry)) {
@@ -242,7 +236,7 @@ if (isset($_GET['status'])) {
 
                   <?php
                   //if layaway closed hide the deposit button
-                  $paidQuery = "SELECT * FROM paymentdetails WHERE paymentID = $payID AND status = 'close'";
+                  $paidQuery = "SELECT * FROM layawaydetails WHERE LID = $payID AND status = 'close'";
                   $resultz = mysqli_query($conn, $paidQuery);
                   if (mysqli_num_rows($resultz) > 0) { ?>
 

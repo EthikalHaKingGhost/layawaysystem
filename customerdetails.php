@@ -52,7 +52,7 @@ if (isset($_GET["stat"])) {
   <?php
   include 'connection.php';
 
-  $sql = "SELECT * FROM customerdetails WHERE customerID = $CID";
+  $sql = "SELECT * FROM customerdetails WHERE CID = $CID";
 
   $result = mysqli_query($conn, $sql);
 
@@ -65,7 +65,7 @@ if (isset($_GET["stat"])) {
       $address = $row["address"];
       $email = $row['email'];
       $phone = $row["phone"];
-      $customerID  = $row["customerID"];
+      $customerID  = $row["CID"];
       $update = "customer_edit.php";
       $back = "customers.php";
       $del = "customers.php?del=$customerID";
@@ -94,7 +94,7 @@ if (isset($_GET["stat"])) {
     </div>
     <div class="form-group">
       <label for="phone">Phone</label>
-      <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone" class="form-control" value='<?php echo $phone ?>'>
+      <input type="tel" name="phone" class="form-control" value='<?php echo $phone ?>'>
       <input type="hidden" name="cid" class="form-control" value='<?php echo $customerID ?>'>
     </div>
 

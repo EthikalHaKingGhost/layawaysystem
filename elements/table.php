@@ -28,17 +28,17 @@ if (isset($_GET['error'])) {
 
   include 'connection.php';
 
-  $sql1 = "SELECT * FROM paymentdetails, productdetails WHERE paymentdetails.paymentID = productdetails.paymentID AND productdetails.paymentID = $pid";
+  $sql1 = "SELECT * FROM layawaydetails, productdetails WHERE layawaydetails.LID = productdetails.LID AND productdetails.LID = $lid";
 
   $resultsql1 = mysqli_query($conn, $sql1);
 
   if (mysqli_num_rows($resultsql1) > 0) {
     // output data of each row
     while ($row = mysqli_fetch_assoc($resultsql1)) {
-      $productName = $row["productName"];
+      $productName = $row["product"];
       $qty = $row["qty"];
       $price = $row["price"];
-      $detailID = $row["detailID"];
+      $PDID = $row["PDID"];
 
   ?>
       <tbody class="bg-white text-dark">
@@ -48,7 +48,7 @@ if (isset($_GET['error'])) {
           <td><?php echo $price; ?></td>
           <td>
 
-            <a href='<?php echo "layaway_process.php?pid=$pid&detID=$detailID&cid=$cid" ?>' title="delete customer" class="btn btn-danger btn-sm">Delete</a>
+            <a href='<?php echo "layaway_process.php?delProduct&lid=$lid&PDID=$PDID&cid=$cid" ?>' title="delete product" class="btn btn-danger btn-sm">Remove</a>
           </td>
         </tr>
       </tbody>

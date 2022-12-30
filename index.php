@@ -74,7 +74,7 @@
 
 include 'connection.php';
 
-$sql = "SELECT * FROM customerdetails, paymentdetails WHERE customerdetails.customerID = paymentdetails.customerID AND customerdetails.customerID > 0";
+$sql = "SELECT * FROM customerdetails, layawaydetails WHERE customerdetails.CID = layawaydetails.CID AND customerdetails.CID > 0";
 
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
@@ -88,13 +88,13 @@ if (mysqli_num_rows($result) > 0) {
 
 include 'connection.php';
 
-$SumTotal = "SELECT SUM(TotalPrice) AS amount FROM customerdetails, paymentdetails WHERE customerdetails.customerID = paymentdetails.customerID";
+$SumTotal = "SELECT SUM(total) AS amount FROM layawaydetails";
 $SumTotalQry = mysqli_query($conn, $SumTotal);
 $row = mysqli_fetch_assoc($SumTotalQry);
 $totalMoney = $row['amount'];
 
 
-$SumBalance = "SELECT paymentdetails.TotalPrice - SUM(deposit) AS bal FROM deposits, paymentdetails WHERE paymentdetails.paymentID = deposits.paymentID";
+$SumBalance = "SELECT SUM(balance) AS bal FROM layawaydetails";
 $SumBalanceQry = mysqli_query($conn, $SumBalance);
 $row = mysqli_fetch_assoc($SumBalanceQry);
 $sumbalance = $row['bal'];
@@ -102,46 +102,41 @@ $sumbalance = $row['bal'];
 $sumMoney = $totalMoney - $sumbalance;
 
 
-$SumCash = "SELECT SUM(Deposit) AS cash FROM deposits WHERE paymentType = 'cash'";
+$SumCash = "SELECT SUM(Deposit) AS cash FROM paymentdetails";
 $SumCashQry = mysqli_query($conn, $SumCash);
 $row = mysqli_fetch_assoc($SumCashQry);
 $cashSum = $row['cash'];
 
-$SumCredit = "SELECT SUM(Deposit) AS credit FROM deposits WHERE paymentType = 'credit'";
-$SumCreditQry = mysqli_query($conn, $SumCredit);
-$row = mysqli_fetch_assoc($SumCreditQry);
-$creditSum = $row['credit'];
-
-
-$SumQty = "SELECT SUM(totalQuantity) AS items FROM customerdetails, paymentdetails WHERE customerdetails.customerID = paymentdetails.customerID";
+$SumQty = "SELECT SUM(qty) AS items FROM productdetails";
 $SumQtyQry = mysqli_query($conn, $SumQty);
 $row = mysqli_fetch_assoc($SumQtyQry);
 $sumqty = $row['items'];
 
 
-$SumPay = "SELECT COUNT(paymentID) AS payments FROM customerdetails, paymentdetails WHERE customerdetails.customerID = paymentdetails.customerID AND paymentdetails.customerID != 0";
-$SumPayQry = mysqli_query($conn, $SumPay);
+$countPay = "SELECT COUNT(LID) AS counts FROM layawaydetails";
+$SumPayQry = mysqli_query($conn, $countPay);
 $row = mysqli_fetch_assoc($SumPayQry);
-$LaywayN = $row['payments'];
+$LaywayN = $row['counts'];
 
-$countCust = "SELECT COUNT(customerID) AS customers FROM customerdetails WHERE customerID != 0";
+$countCust = "SELECT COUNT(CID) AS customers FROM customerdetails WHERE CID != 0";
 $countCustQry = mysqli_query($conn, $countCust);
 $row = mysqli_fetch_assoc($countCustQry);
 $customerCount = $row['customers'];
 
-$countOpen = "SELECT COUNT(paymentID) AS status FROM paymentdetails WHERE status = 'open' AND customerID != 0";
+$countOpen = "SELECT COUNT(LID) AS stat FROM layawaydetails WHERE `status` = 'open' AND CID != 0";
 $countOpenQry = mysqli_query($conn, $countOpen);
 $row = mysqli_fetch_assoc($countOpenQry);
-$openCount = $row['status'];
+$openCount = $row['stat'];
 
 ?>
 
 <?php include 'header.php'; ?>
 
 
+
 <div class="container pt-5">
     <div class="row mb-3">
-        <div class="col-xl-3 col-sm-6 py-2">
+        <div class="col-xl-4 col-sm-6 py-2">
             <div class="card bg-light text-dark h-100">
                 <div class="card-body">
                     <div class="rotate">
@@ -153,7 +148,7 @@ $openCount = $row['status'];
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 py-2">
+        <div class="col-xl-4 col-sm-6 py-2">
             <div class="card text-dark bg-light h-100">
                 <div class="card-body">
                     <div class="rotate">
@@ -165,19 +160,7 @@ $openCount = $row['status'];
             </div>
         </div>
 
-        <div class="col-xl-3 col-sm-6 py-2">
-            <div class="card text-dark bg-light h-100">
-                <div class="card-body">
-                    <div class="rotate">
-                        <i class="fa fa-credit-card fa-4x"></i>
-                    </div>
-                    <h6 class="text-uppercase">Debit/Credit</h6>
-                    <h1 class="display-6"><?php echo '$' . number_format($creditSum, 2); ?></h1>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-sm-6 py-2">
+        <div class="col-xl-4 col-sm-6 py-2">
             <div class="card text-dark bg-light h-100">
                 <div class="card-body">
                     <div class="rotate">
@@ -235,7 +218,7 @@ $openCount = $row['status'];
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <a href='<?php echo "layaway_process.php?newLayway"; ?>' style="text-decoration: none; color: white;">
+            <a href='<?php echo "layaway_process.php?newLayaway"; ?>' style="text-decoration: none; color: white;">
                 <div class="panel panel-info panel-colorful">
                     <div class="panel-body text-center">
                         <p class="text-uppercase mar-btm text-sm">New Layaway</p>

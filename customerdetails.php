@@ -70,7 +70,7 @@ if (isset($_GET["stat"])) {
       $back = "customers.php";
       $del = "customers.php?del=$customerID";
     }
-  }
+  }  
 
   ?>
 

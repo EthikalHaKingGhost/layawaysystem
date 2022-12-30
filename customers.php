@@ -20,7 +20,7 @@
 
 include 'header.php';
 
-if (isset($_GET["del"])) {
+if (isset($_GET["del"])) { 
 
   $delID = $_GET["del"];
 

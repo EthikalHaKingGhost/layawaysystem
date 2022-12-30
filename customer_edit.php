@@ -82,7 +82,7 @@ if (isset($_POST["addCustomer"])) {
             exit();
         }
     }
-}
+} 
 
 
 

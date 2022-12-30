@@ -128,7 +128,7 @@ $countOpenQry = mysqli_query($conn, $countOpen);
 $row = mysqli_fetch_assoc($countOpenQry);
 $openCount = $row['stat'];
 
-?>
+?>  
 
 <?php include 'header.php'; ?>
 

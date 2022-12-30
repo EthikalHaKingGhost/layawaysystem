@@ -85,7 +85,7 @@ if (typeof jQuery === 'undefined') {
       var $table = this;
 
       // Check if element is 'table'
-      if ($table.prop("tagName") !== 'TABLE') {
+      if ($table.prop("tagName") !== 'TABLE') { 
         throw new Error('Tabledit only works when applied to a table.');
       }
 

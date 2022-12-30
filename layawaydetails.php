@@ -30,7 +30,7 @@ echo'
 }
 }
 
-if (isset($_GET["deleted"])) {
+if (isset($_GET["deleted"])) { 
 
 echo'
       <div class="alert alert-success alert-dismissible">

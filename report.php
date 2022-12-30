@@ -23,7 +23,7 @@ require_once 'header.php';
         position: sticky;
         top: 0;
         z-index: 1;
-    }
+    } 
 </style>
 
 <h1 class="display-4 py-5 text-center font-weight-bold">Payment Report</h1>

@@ -290,7 +290,7 @@ if (isset($_GET['status'])) {
       header("location: index.php");
 
       exit();
-    }
+    } 
     ?>
 
   </div>

@@ -129,7 +129,7 @@ if (isset($_GET["del_lay"])) {
   header("location: layawaydetails.php?deleted");
 
   exit();
-}
+} 
 
 
 

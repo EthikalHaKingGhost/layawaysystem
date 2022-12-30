@@ -13,7 +13,7 @@
   
 </head>
 
-<body>
+<body> 
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.php"> <img class="logo" src="img/icon.png" height="40"> Heavenly Lights Bookstore</a>

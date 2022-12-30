@@ -228,7 +228,7 @@ if (isset($_GET['error'])) {
 
 
 <?php
- } else {
+ } else { 
  ?>
 
   <input type="submit" class="btn btn-info btn-md " name="addLayaway" value="Add">

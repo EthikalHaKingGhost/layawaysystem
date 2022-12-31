@@ -166,7 +166,7 @@ if (isset($_GET["cid"])) {
                 <!-- delete button -->
                 <?php if ($balance == 0 || $status == 'closed'){ ?>
               
-                <a href="<?php echo $dellayaway; ?>" class="btn btn-danger btn-sm">Delete1</a>
+                <a href="<?php echo "layaway_process.php?lid=$lid&cid=$cid&del_lay"; ?>" class="btn btn-danger btn-sm">Delete</a>
 
                 <?php
                 }else{

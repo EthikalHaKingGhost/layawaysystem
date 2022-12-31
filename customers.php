@@ -158,8 +158,12 @@ if (isset($_GET["del"])) {
                     
                   ?>
                     <a href="<?php echo $layawayview; ?>" title="View customer Layway" class="btn btn-info btn-sm">View Layway(s)</a>
-                    <a href="<?php echo $process; ?>" title="View customer Layway" class="btn btn-success btn-sm">New Layway</a>
+                    
+                    <!----Hide if the customer has an open layaway--->
                   <?php
+                  $newSql = "SELECT * FROM layawaydetails WHERE CID = $CID AND status='open')";
+                    $resultssql = mysqli_query($conn, $newSql);
+                    if (mysqli_num_rows($resultssql) > 0) {}else{ echo '<a href="'.$process.'" title="View customer Layway" class="btn btn-success btn-sm">New Layway</a>';}
                   } else {
                   ?>
                     <a href="<?php echo $process; ?>" title="View customer Layway" class="btn btn-success btn-sm">New Layway</a>

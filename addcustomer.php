@@ -1,6 +1,4 @@
-<?php
-include 'header.php'; 
-?>
+<?php include 'header.php'; ?>
 <body style="background-color: lightgrey;">
 <h1 class="display-4 py-5 text-center font-weight-bold">Add Customer</h1>
 

@@ -226,9 +226,7 @@ if (isset($_GET["newLayaway"])) {
       
   } else {
 
-  $today = date('Y-m-d');
-
-    $query = "INSERT INTO `layawaydetails`(`CID`,`balance`, `total`, `dateCreated`, `dateDue`, `status`) VALUES ($cid,0,0, $today,'0000-00-00','open')";
+    $query = "INSERT INTO `layawaydetails`(`CID`,`balance`, `total`, `dateCreated`, `dateDue`, `status`) VALUES ($cid,0,0, current_timestamp(),'0000-00-00','open')";
     if (mysqli_query($conn, $query)) {
       $last_id = mysqli_insert_id($conn);
 

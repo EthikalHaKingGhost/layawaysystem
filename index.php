@@ -128,7 +128,7 @@ $countOpenQry = mysqli_query($conn, $countOpen);
 $row = mysqli_fetch_assoc($countOpenQry);
 $openCount = $row['stat'];
 
-?>  
+?>
 
 <?php include 'header.php'; ?>
 
@@ -143,8 +143,12 @@ $openCount = $row['stat'];
                         <i class="fa fa-dollar-sign fa-4x"></i>
                     </div>
                     <h6 class="text-uppercase">Total Balance</h6>
-                    <h1 class="display-6 text-danger"><?php echo '$' . number_format($sumbalance, 2); ?></h1>
-                    <small class="form-text text-muted"><?php echo 'from $' . $totalMoney; ?></small>
+                    <h1 class="display-6 text-danger">
+                        <?php echo '$' . number_format($sumbalance, 2); ?>
+                    </h1>
+                    <small class="form-text text-muted">
+                        <?php echo 'from $' . $totalMoney; ?>
+                    </small>
                 </div>
             </div>
         </div>
@@ -155,7 +159,9 @@ $openCount = $row['stat'];
                         <i class="fa fa-cash-register fa-4x"></i>
                     </div>
                     <h6 class="text-uppercase">Deposit in Drawer</h6>
-                    <h1 class="display-6"><?php echo '$' . number_format($cashSum, 2); ?></h1>
+                    <h1 class="display-6">
+                        <?php echo '$' . number_format($cashSum, 2); ?>
+                    </h1>
                 </div>
             </div>
         </div>
@@ -167,7 +173,9 @@ $openCount = $row['stat'];
                         <i class="fa fa-hand-holding-usd fa-4x"></i>
                     </div>
                     <h6 class="text-uppercase">Open Layways</h6>
-                    <h1 class="display-6"><?php echo $openCount; ?></h1>
+                    <h1 class="display-6">
+                        <?php echo $openCount; ?>
+                    </h1>
                 </div>
             </div>
         </div>
@@ -185,8 +193,12 @@ $openCount = $row['stat'];
                     <p class="text-uppercase mar-btm text-sm">Reports</p>
                     <i class="fa fa-chart-pie fa-5x"></i>
                     <hr>
-                    <p class="h2 text-thin"><?php echo '$' . number_format($sumMoney, 2); ?></p>
-                    <small><span class="text-semibold"><?php echo $sumqty ?></span> items Credited</small>
+                    <p class="h2 text-thin">
+                        <?php echo '$' . number_format($sumMoney, 2); ?>
+                    </p>
+                    <small><span class="text-semibold">
+                            <?php echo $sumqty ?>
+                        </span> items Credited</small>
                 </div>
             </div>
         </div>
@@ -197,7 +209,9 @@ $openCount = $row['stat'];
                         <p class="text-uppercase mar-btm text-sm">View Layaways</p>
                         <i class="fa fa-book fa-5x"></i>
                         <hr>
-                        <p class="h2 text-thin"><?php echo $LaywayN; ?></p>
+                        <p class="h2 text-thin">
+                            <?php echo $LaywayN; ?>
+                        </p>
                         <small><span class="text-semibold"><i class="fa fa-book fa-fw"></i></span>Layways</small>
                     </div>
                 </div>
@@ -210,7 +224,9 @@ $openCount = $row['stat'];
                         <p class="text-uppercase mar-btm text-sm">Customers</p>
                         <i class="fa fa-users fa-5x"></i>
                         <hr>
-                        <p class="h2 text-thin"><?php echo $customerCount; ?></p>
+                        <p class="h2 text-thin">
+                            <?php echo $customerCount; ?>
+                        </p>
                         <small><span class="text-semibold"><i class="fa fa-users fa-fw"></i></span> Customers</small>
                     </div>
                 </div>
@@ -225,12 +241,11 @@ $openCount = $row['stat'];
                         <i class="fa fa-dollar-sign fa-5x"></i>
                         <hr>
                         <p class="h2 text-thin">+1</p>
-                        <small><span class="text-semibold"><i class="fa fa-dollar-sign fa-fw"></i></span> Click to Add a Layaway</small>
+                        <small><span class="text-semibold"><i class="fa fa-dollar-sign fa-fw"></i></span> Click to Add a
+                            Layaway</small>
                     </div>
                 </div>
             </a>
         </div>
     </div>
 </div>
-
-

@@ -5,7 +5,7 @@ $noResult = '';
 
 $query = "SELECT paymentdetails.PID,layawaydetails.LID,Layawaydetails.CID,customerdetails.name,customerdetails.email,customerdetails.phone,paymentdetails.Deposit as Deposits,paymentdetails.datePaid,paymentdetails.balance,layawaydetails.total,layawaydetails.status 
 FROM customerdetails,paymentdetails,layawaydetails 
-WHERE layawaydetails.LID = paymentdetails.LID AND layawaydetails.CID = customerdetails.CID ORDER By paymentdetails.PID DESC";
+WHERE layawaydetails.LID = paymentdetails.LID AND layawaydetails.CID = customerdetails.CID ORDER By paymentdetails.PID ASC";
 
 $results = mysqli_query($conn, $query);
 $allData = array();

@@ -67,39 +67,43 @@ if (isset($_GET['error'])) {
 }
 ?>
 
-<h1 class="display-4 py-5 text-center font-weight-bold"><?php echo "Layaway for ".$name_find ?> </h1>
+<h1 class="display-4 py-5 text-center font-weight-bold">
+    <?php echo "Layaway for ".$name_find ?>
+</h1>
 
 <body class="vh-100" style="background-color: lightgrey;">
-  <div class="container bg-light rounded shadow">
-    <div class="row d-flex justify-content-center p-4 mt-4">
+    <div class="container bg-light rounded shadow">
+        <div class="row d-flex justify-content-center p-4 mt-4">
 
-      <div class="col-6">
+            <div class="col-6">
 
-        <form action='layaway_process.php' method='get'>
+                <form action='layaway_process.php' method='get'>
 
-        <label for="productinfo">Product Name</label>
-                <textarea class="form-control mb-3" rows="2" name="product" id="productinfo"></textarea>
+                    <label for="productinfo">Product Name</label>
+                    <textarea class="form-control mb-3" rows="2" name="product" id="productinfo"></textarea>
 
-                <div class="form-group">
-                  <div class="form-row">
-                    <div class="col">
-                      <label for="input_id_20">Quantity</label>
-                      <input type="number" class="form-control form-control-sm mb-3" min="1" value="1" name="quantity" id="quantityinfo" />
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="input_id_20">Quantity</label>
+                                <input type="number" class="form-control form-control-sm mb-3" min="1" value="1"
+                                    name="quantity" id="quantityinfo" />
+                            </div>
+                            <div class="col">
+                                <label>Cost of Item</label>
+                                <input type="number" class="form-control form-control-sm mb-3" min="1" placeholder="0"
+                                    step="any" name="price" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                      <label>Cost of Item</label>
-                      <input type="number" class="form-control form-control-sm mb-3" min="1" placeholder="0" step="any" name="price" />
-                    </div>
-                  </div>
-                </div>
 
-                <div class="text-center pb-2">
-                  <input type="hidden" name="pid" value="<?php echo $pid; ?>">
-                  <input type="hidden" name="cid" value='<?php echo $cid; ?>'>
+                    <div class="text-center pb-2">
+                        <input type="hidden" name="pid" value="<?php echo $pid; ?>">
+                        <input type="hidden" name="cid" value='<?php echo $cid; ?>'>
 
-                  <input type="submit" class="btn btn-dark" name="Additem" value="Add Item">
+                        <input type="submit" class="btn btn-dark" name="Additem" value="Add Item">
 
-                  <?php
+                        <?php
 
                   if (isset($_GET['error'])) {
                     if ($_GET['error'] == "missingitem") {
@@ -124,44 +128,53 @@ if (isset($_GET['error'])) {
                       $bal = $row['balance'];
                   ?>
 
-                </div>
+                    </div>
 
 
-          <hr class="solid pb-2" style="border-top: 3px solid #EEE;">
+                    <hr class="solid pb-2" style="border-top: 3px solid #EEE;">
 
-<!-------- DEPOSIT FIELDS  ---------> 
-          <div class="form-group">
-              <div class="form-row">
-                      <div class="col mb-3">
-                        <label><?php
+                    <!-------- DEPOSIT FIELDS  --------->
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col mb-3">
+                                <label>
+                                    <?php
                         //checks if inital deposit is same as balance and updates label
                          if ($row['total'] != $row['balance']){echo 'Deposit';}else{ echo 'Initial Deposit';} 
                                                  
-                         ?></label>
-                        <input type="number" class="form-control form-control-sm " min="1" max="<?php echo $row['balance']; ?>" step="any" name="Deposit" placeholder="0">
-                        <small class="text-muted">Change customer deposit</small>
-                      </div>
-                      <div class="col mb-3">
-                        <label>Due Date</label>
-                        <input type="Date" class="form-control form-control-sm " name="dateDue" min="<?php echo date("Y-m-d"); ?>" value="<?php echo $dateDue; ?>">
-                      </div>
-                </div>
-            </div>
+                         ?>
+                                </label>
+                                <input type="number" class="form-control form-control-sm " min="1"
+                                    max="<?php echo $row['balance']; ?>" step="any" name="Deposit" placeholder="0">
+                                <small class="text-muted">Change customer deposit</small>
+                            </div>
+                            <div class="col mb-3">
+                                <label>Due Date</label>
+                                <input type="Date" class="form-control form-control-sm " name="dateDue"
+                                    min="<?php echo date(" Y-m-d"); ?>" value="
+                                <?php echo $dateDue; ?>">
+                            </div>
+                        </div>
+                    </div>
 
-<h2><?php echo "Total: $". $row['total']; ?></h2>
-<h3><?php echo "Balance: $". $row['balance']; ?></h3>
+                    <h2>
+                        <?php echo "Total: $". $row['total']; ?>
+                    </h2>
+                    <h3>
+                        <?php echo "Balance: $". $row['balance']; ?>
+                    </h3>
 
 
- <!-------- END OF DEPOSIT FIELDS  ---------> 
+                    <!-------- END OF DEPOSIT FIELDS  --------->
 
 
- <!-------- DEPOSIT BUTTONS  ---------> 
-            <div class="text-center my-3">
-              <a class="btn btn-primary btn-md" onclick="history.go(-1);">Back </a>
-              <input type="hidden" name="lid" value="<?php echo $lid; ?>">
-              <input type="hidden" name="cid" value="<?php echo $cid; ?>">
+                    <!-------- DEPOSIT BUTTONS  --------->
+                    <div class="text-center my-3">
+                        <a class="btn btn-primary btn-md" onclick="history.go(-1);">Back </a>
+                        <input type="hidden" name="lid" value="<?php echo $lid; ?>">
+                        <input type="hidden" name="cid" value="<?php echo $cid; ?>">
 
-              <?php
+                        <?php
 
               //change button to update if layaway total is not equal to the balance.
               include 'connection.php';
@@ -172,33 +185,34 @@ if (isset($_GET['error'])) {
                 (int)$count = $rows['count'];
               if ($rows['count'] > 1) {
               ?>
-                <a type="button" class="btn btn-dark" href="Layawaydetails.php">
-                  All Layaways
-                </a>
-              <?php
+                        <a type="button" class="btn btn-dark" href="Layawaydetails.php">
+                            All Layaways
+                        </a>
+                        <?php
               }
 
               //check if total deposit is not equal to balance (!= if deposit made)
               if ($row['total'] != $row['balance']){
               ?>
-                <input type="submit" class="btn btn-success btn-md" name="addLayaway" value="Update">
-              <!-- delete button -->
-                <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
-                  Delete
-                </a>
+                        <input type="submit" class="btn btn-success btn-md" name="addLayaway" value="Update">
+                        <!-- delete button -->
+                        <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
+                            Delete
+                        </a>
 
-                <!-- Modal for delete button-->
-                <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Confirm</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <?php
+                        <!-- Modal for delete button-->
+                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Confirm</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
 
            include 'connection.php';
            $amountqry = "SELECT SUM(Deposit) AS totalDep FROM paymentdetails WHERE LID = $lid";
@@ -217,38 +231,40 @@ if (isset($_GET['error'])) {
            echo "<b class='text-danger'>Please withdraw Deposited cash before deleting!</b>";
 
            ?>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a href="<?php echo "layaway_process.php?lid=$lid&cid=$cid&del_lay" ?>"><button type="button" class="btn btn-danger">Delete</button></a>
-        </div>
-      </div>
-    </div>
-  </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="<?php echo " layaway_process.php?lid=$lid&cid=$cid&del_lay" ?>"><button
+                                                type="button" class="btn btn-danger">Delete</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
-<?php
+                        <?php
  } else { 
  ?>
 
-  <input type="submit" class="btn btn-info btn-md " name="addLayaway" value="Add">
+                        <input type="submit" class="btn btn-info btn-md " name="addLayaway" value="Add">
 
-<?php
+                        <?php
  }
  ?>
 
-</div>
-</form>
+                    </div>
+                </form>
 
-</div>
-      <div class="col-6 my-auto">
-        
-        <?php include "elements/table.php"; ?>
-      </div>
+            </div>
+            <div class="col-6 my-auto">
+
+                <?php include "elements/table.php"; ?>
+            </div>
 
 
+        </div>
     </div>
-  </div>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js"></script>

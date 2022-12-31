@@ -1,18 +1,18 @@
 <style type="text/css">
-  html body {
-    background: lightgrey;
-  }
+    html body {
+        background: lightgrey;
+    }
 
-  .tableFixHead {
-    overflow: auto;
-    height: 600px;
-  }
+    .tableFixHead {
+        overflow: auto;
+        height: 600px;
+    }
 
-  .tableFixHead thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
 </style>
 
 
@@ -58,34 +58,35 @@ if (isset($_GET["cid"])) {
 
 <div class="container">
 
-  <div class="form-row align-items-end">
+    <div class="form-row align-items-end">
 
-    <div class="form-group col-auto">
-    <a href="addcustomer.php"><button type="button" class="btn btn-info btn-md">New Layaway</button></a>
-      <a href="index.php" class="btn btn-danger btn-md">Back</a>
-</div>
-<div class="form-group col">
-      <input class="form-control" id="myInput" type="text" placeholder="Type to search for Customer...">
+        <div class="form-group col-auto">
+            <a href="addcustomer.php"><button type="button" class="btn btn-info btn-md">New Layaway</button></a>
+            <a href="index.php" class="btn btn-danger btn-md">Back</a>
+        </div>
+        <div class="form-group col">
+            <input class="form-control" id="myInput" type="text" placeholder="Type to search for Customer...">
+        </div>
     </div>
-  </div>
 
-  <div class="tableFixHead">
+    <div class="tableFixHead">
 
-    <table class="table table-striped table-light">
-      <thead>
-        <tr class="text-center">
-          <th>Name</th>
-          <th>No.of Deposits</th>
-          <th>Balance</th>
-          <th>Total</th>
-          <th>Date Due</th>
-          <th>Completed</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+        <table class="table table-striped table-light">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>No.of Deposits</th>
+                    <th>Balance</th>
+                    <th>Total</th>
+                    <th>Date Started</th>
+                    <th>Date Due</th>
+                    <th>Completed</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
 
-      <?php
+            <?php
 
       include 'connection.php';
 
@@ -107,6 +108,7 @@ if (isset($_GET["cid"])) {
           }
           $Date = Date('Y-m-d');
           $dueDate = $row['dateDue'];
+          $dateStarted = $row['dateCreated'];
           $layaway = "addlayaway.php?cid=$cid";
           $dellayaway = "layawaydetails.php?delCID=$cid&delLID=$lid";
 
@@ -151,40 +153,58 @@ if (isset($_GET["cid"])) {
 
 ?>
 
-              <tbody id="myTable">
-                <tr class="text-center">
-                  
-                  <td><?php echo $name; ?></td>
-                  <td><?php echo $depositNumber; ?></td>
-                  <td><?php echo $balance; ?></td>
-                  <td><?php echo $TotalPrice; ?></td>
-                  <td><?php echo $dueDate; ?></td>
-                  <td <?php echo $color; ?>><?php echo round($progress) . '%'; ?></td>
-                  <td><a href="<?php echo $layaway; ?>" title="View customer Layway" 
-                  class="btn btn-success btn-sm">Edit</a>
+            <tbody id="myTable">
+                <tr>
 
-                <!-- delete button -->
-                <?php if ($balance == 0 || $status == 'closed'){ ?>
-              
-                <a href="<?php echo "layaway_process.php?lid=$lid&cid=$cid&del_lay"; ?>" class="btn btn-danger btn-sm">Delete</a>
+                    <td>
+                        <?php echo $name; ?>
+                    </td>
+                    <td>
+                        <?php echo $depositNumber; ?>
+                    </td>
+                    <td>
+                        <?php echo $balance; ?>
+                    </td>
+                    <td>
+                        <?php echo $TotalPrice; ?>
+                    </td>
+                    <td>
+                        <?php echo date("d/m/Y", strtotime($dateStarted)); ?>
+                    </td>
+                    <td>
+                        <?php echo date("d/m/Y", strtotime($dueDate)); ?>
+                    </td>
+                    <td <?php echo $color; ?>>
+                        <?php echo round($progress) . '%'; ?>
+                    </td>
+                    <td><a href="<?php echo $layaway; ?>" title="View customer Layway"
+                            class="btn btn-success btn-sm">Edit</a>
 
-                <?php
+                        <!-- delete button -->
+                        <?php if ($balance == 0 || $status == 'closed'){ ?>
+
+                        <a href="<?php echo " layaway_process.php?lid=$lid&cid=$cid&del_lay"; ?>" class="btn btn-danger
+                            btn-sm">Delete</a>
+
+                        <?php
                 }else{
                 ?>
-                <a type="button" class="btn btn-danger btn-sm text-white" data-toggle="modal" data-target="#staticBackdrop">Delete</a>
+                        <a type="button" class="btn btn-danger btn-sm text-white" data-toggle="modal"
+                            data-target="#staticBackdrop">Delete</a>
 
-                    <!-- Modal for delete button-->
-                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Confirm</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <?php
+                        <!-- Modal for delete button-->
+                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Confirm</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
 
                           include 'connection.php';
                           $amountqry = "SELECT SUM(Deposit) AS totalDep FROM paymentdetails WHERE LID = $lid";
@@ -203,48 +223,50 @@ if (isset($_GET["cid"])) {
                           echo "<b class='text-danger'>Please withdraw Deposited cash before deleting!</b>";
 
                           ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="<?php echo " layaway_process.php?lid=$lid&cid=$cid&del_lay" ?>"><button
+                                                type="button" class="btn btn-danger">Delete</button></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                          <a href="<?php echo "layaway_process.php?lid=$lid&cid=$cid&del_lay" ?>"><button type="button" class="btn btn-danger">Delete</button></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <?php
+                        <?php
                 } 
                 ?>
-                          </td>
-                          
-                          
-
-                        </tr>
-                      </tbody>
+                    </td>
 
 
-                  <?php
+
+                </tr>
+            </tbody>
+
+
+            <?php
                     }
                   }
                   ?>
 
-                </table>
-              </div>
+        </table>
+    </div>
 
 
 
-            </div>
+</div>
 
 
 <script>
-  $(document).ready(function() {
-    $("#myInput").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
-    });
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
 
-  });
+    });
 
 </script>
 
